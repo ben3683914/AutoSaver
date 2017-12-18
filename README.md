@@ -39,5 +39,5 @@ int keep = 60;
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
 ## Links
-[They Are Billions](http://store.steampowered.com/app/644930/They_Are_Billions/)
-[TopShelf](http://topshelf-project.com/)
+* [They Are Billions](http://store.steampowered.com/app/644930/They_Are_Billions/)
+* [TopShelf](http://topshelf-project.com/)
