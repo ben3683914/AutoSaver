@@ -1,6 +1,6 @@
 ﻿namespace AutoSaver2.Forms
 {
-    partial class NewGameForm
+    partial class EditGameForm
     {
         /// <summary>
         /// Required designer variable.
@@ -42,7 +42,7 @@
             this.ArchiveSaveFrequencyNumber = new System.Windows.Forms.NumericUpDown();
             this.KeepAmountNumber = new System.Windows.Forms.NumericUpDown();
             this.ToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.AddGameButton = new System.Windows.Forms.Button();
+            this.SaveGameButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.ArchiveSaveFrequencyNumber)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.KeepAmountNumber)).BeginInit();
             this.SuspendLayout();
@@ -185,23 +185,23 @@
             0,
             0});
             // 
-            // AddGameButton
+            // SaveGameButton
             // 
-            this.AddGameButton.Location = new System.Drawing.Point(199, 166);
-            this.AddGameButton.Name = "AddGameButton";
-            this.AddGameButton.Size = new System.Drawing.Size(88, 33);
-            this.AddGameButton.TabIndex = 13;
-            this.AddGameButton.Text = "Add Game";
-            this.AddGameButton.UseVisualStyleBackColor = true;
-            this.AddGameButton.Click += new System.EventHandler(this.AddGameButton_Click);
+            this.SaveGameButton.Location = new System.Drawing.Point(199, 166);
+            this.SaveGameButton.Name = "SaveGameButton";
+            this.SaveGameButton.Size = new System.Drawing.Size(88, 33);
+            this.SaveGameButton.TabIndex = 13;
+            this.SaveGameButton.Text = "Save";
+            this.SaveGameButton.UseVisualStyleBackColor = true;
+            this.SaveGameButton.Click += new System.EventHandler(this.SaveGameButton_Click);
             // 
-            // NewGameForm
+            // EditGameForm
             // 
-            this.AcceptButton = this.AddGameButton;
+            this.AcceptButton = this.SaveGameButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(629, 218);
-            this.Controls.Add(this.AddGameButton);
+            this.Controls.Add(this.SaveGameButton);
             this.Controls.Add(this.KeepAmountNumber);
             this.Controls.Add(this.ArchiveSaveFrequencyNumber);
             this.Controls.Add(this.ArchiveSaveFrequencySecondsLabel);
@@ -214,11 +214,11 @@
             this.Controls.Add(this.SaveLocationTextBox);
             this.Controls.Add(this.GameNameTextbox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Name = "NewGameForm";
+            this.Name = "EditGameForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "New Game";
-            this.Load += new System.EventHandler(this.NewGameForm_Load);
+            this.Text = "Edit Game";
+            this.Load += new System.EventHandler(this.EditGameForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.ArchiveSaveFrequencyNumber)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.KeepAmountNumber)).EndInit();
             this.ResumeLayout(false);
@@ -241,6 +241,6 @@
         private NumericUpDown ArchiveSaveFrequencyNumber;
         private NumericUpDown KeepAmountNumber;
         private ToolTip ToolTip;
-        private Button AddGameButton;
+        private Button SaveGameButton;
     }
 }

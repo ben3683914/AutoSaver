@@ -10,17 +10,26 @@ using System.Windows.Forms;
 
 namespace AutoSaver2.Forms
 {
-    public partial class NewGameForm : Form
+    public partial class EditGameForm : Form
     {
-        public NewGameForm()
+        private Game game;
+        public EditGameForm(Game game)
         {
             InitializeComponent();
-            var gamesFolder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "My Games");
-            SaveLocationDialog.InitialDirectory = gamesFolder;
-            SaveLocationTextBox.Text = gamesFolder;
+
+            this.game = game;
+
+            GameNameTextbox.Text = game.Title;
+            SaveLocationDialog.InitialDirectory = game.SaveLocation;
+            SaveLocationTextBox.Text = game.SaveLocation;
+            IsWatchSaveFolder.Checked = game.IsWatcher;
+            ArchiveSaveFrequencyNumber.Value = Convert.ToDecimal(game.Frequency);
+            KeepAmountNumber.Value = Convert.ToDecimal(game.KeepCount);
+
+            
         }
 
-        private void NewGameForm_Load(object sender, EventArgs e)
+        private void EditGameForm_Load(object sender, EventArgs e)
         {
             ArchiveSaveFrequencyLabel.Visible= false;
             ArchiveSaveFrequencyNumber.Visible= false;
@@ -49,17 +58,15 @@ namespace AutoSaver2.Forms
             }
         }
 
-        private void AddGameButton_Click(object sender, EventArgs e)
+        private void SaveGameButton_Click(object sender, EventArgs e)
         {
-            var guid = new Guid(Guid.NewGuid().ToString());
-            var game = new Game();
-            game.GUID = guid.ToString();
-            game.Title = GameNameTextbox.Text.Trim();
+            game.Title = GameNameTextbox.Text;
             game.IsWatcher = IsWatchSaveFolder.Checked;
-            game.SaveLocation = SaveLocationTextBox.Text.Trim();
+            game.SaveLocation = SaveLocationTextBox.Text;
             game.Frequency = ((int)ArchiveSaveFrequencyNumber.Value);
             game.KeepCount = ((int)KeepAmountNumber.Value);
-            Manager.Instance.GameManager.AddGame(game);
+            this.DialogResult = DialogResult.OK;
+
             this.Close();
         }
     }

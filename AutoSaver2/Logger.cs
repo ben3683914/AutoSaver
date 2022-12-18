@@ -12,7 +12,27 @@ namespace AutoSaver2
         public static string FolderLocation = "";
         public static string LogFileName = "";
 
-        public static void Add(string log, LogLevel level = LogLevel.Info)
+        public static void SetFolder()
+        {
+            FolderLocation = Path.Combine(Utilities.RootFolder, "logs");
+        }
+
+        public static void Info(string log, LogLevel level = LogLevel.Info)
+        {
+            Add(log, level);
+        }
+
+        public static void Error(string log, LogLevel level = LogLevel.Error)
+        {
+            Add(log, level);
+        }
+
+        public static void Debug(string log, LogLevel level = LogLevel.Debug)
+        {
+            Add(log, level);
+        }
+
+        private static void Add(string log, LogLevel level)
         {
             if(!Directory.Exists(FolderLocation))
             {
@@ -29,14 +49,14 @@ namespace AutoSaver2
                 {
                     string line = "File created: " + dt;
                     sw.WriteLine(line);
-                    Debug.WriteLine(line);
+                    System.Diagnostics.Debug.WriteLine(line);
                 }
             }
 
             using (StreamWriter sw = File.AppendText(path))
             {
                 sw.WriteLine(logLine);
-                Debug.WriteLine(logLine);
+                System.Diagnostics.Debug.WriteLine(logLine);
             }
         }
     }

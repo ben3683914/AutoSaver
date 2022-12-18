@@ -8,7 +8,8 @@ namespace AutoSaver2
 {
     public class Game
     {
-        public string Name { get; set; }
+        public string GUID { get; set; }
+        public string Title { get; set; }
         public string SaveLocation { get; set; }
         public bool IsWatcher { get; set; }
         public int Frequency { get; set; }
