@@ -10,7 +10,7 @@ namespace AutoSaver2
     internal class ServiceControl
     {
         public event EventHandler OnServiceStatusChanged;
-        
+        private FileSystemWatcher watcher;
 
         public enum Status
         {
@@ -24,6 +24,7 @@ namespace AutoSaver2
         public ServiceControl()
         {
             Manager.Instance.GameManager.Games.CollectionChanged += Games_CollectionChanged;
+            watcher = Manager.Instance.SaveFileWatcher;
         }
 
         private void Games_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
@@ -39,6 +40,7 @@ namespace AutoSaver2
                 CurrentStatus = Status.Running;
                 UpdateCurrentGame();
                 OnServiceStatusChanged(null, new EventArgs());
+                Monitor();
             }
         }
 
@@ -49,6 +51,7 @@ namespace AutoSaver2
                 CurrentStatus = Status.Stopped;
                 UpdateCurrentGame();
                 OnServiceStatusChanged(null, new EventArgs());
+                watcher.EnableRaisingEvents = false;
             }
         }
 
@@ -68,6 +71,86 @@ namespace AutoSaver2
                 Stop();
             else
                 Start();
+        }
+
+        private void Monitor()
+        {
+            if (CurrentGame.IsWatcher)
+                Watch();
+            else
+                Timer();
+        }
+
+        private void Watch()
+        {
+            watcher.Path = CurrentGame.SaveLocation;
+            watcher.EnableRaisingEvents = true;
+
+            watcher.NotifyFilter = NotifyFilters.Attributes
+                                 | NotifyFilters.CreationTime
+                                 | NotifyFilters.DirectoryName
+                                 | NotifyFilters.FileName
+                                 | NotifyFilters.LastAccess
+                                 | NotifyFilters.LastWrite
+                                 | NotifyFilters.Security
+                                 | NotifyFilters.Size;
+
+            watcher.Changed += OnFileWatcherEvent;
+            watcher.Created += OnFileWatcherEvent;
+            watcher.Deleted += OnFileWatcherEvent;
+            watcher.Renamed += OnFileWatcherEvent;
+
+            watcher.Filter = "*";
+            watcher.IncludeSubdirectories = false;
+            watcher.EnableRaisingEvents = true;
+        }
+
+        private void OnFileWatcherEvent(object sender, FileSystemEventArgs e)
+        {
+            if(e.ChangeType == WatcherChangeTypes.Created || e.ChangeType == WatcherChangeTypes.Changed)
+            {
+                string newFilePath = e.FullPath;
+                var fi = new FileInfo(newFilePath);
+                long fileSize = 0;
+                int elapsedWait = 0;
+                int waitTime = 1000;
+
+                while (true)
+                {
+                    fi = new FileInfo(newFilePath);
+                    elapsedWait += waitTime;
+                    if (elapsedWait >= 30000)
+                        break;
+
+                    Utilities.Wait(waitTime);
+
+                    try
+                    {
+                        
+                        if (fi.Length > fileSize)
+                        {
+                            Logger.Debug($"checking file: {newFilePath}");
+                            Logger.Debug($"{fi.Length} vs {fileSize}");
+                            fileSize = fi.Length;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    } catch
+                    {
+                        break;
+                    }
+                }
+
+                CurrentGame.CreateSave(newFilePath, fi.LastWriteTime);
+            }
+
+        }
+
+        private void Timer()
+        {
+
         }
     }
 }

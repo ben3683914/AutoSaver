@@ -28,7 +28,7 @@ namespace AutoSaver2
             controls.Add("MainStatusStripMonitoredGamelabel", ToolStripMonitoredGameLabel);
 
 
-            Manager.Instance.Initialize(controls);
+            Manager.Instance.Initialize(controls, SaveFileWatcher);
             Manager.Instance.GameManager.Load();
             Manager.Instance.UI.Refresh();
         }
@@ -45,7 +45,9 @@ namespace AutoSaver2
 
         private void GamesListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Manager.Instance.UI.SelectedGame = Manager.Instance.UI.GamesBox.GetCurrentItem();
+            var selectedGame = Manager.Instance.UI.GamesBox.GetCurrentItem();
+            Manager.Instance.UI.SelectedGame = selectedGame;
+            Manager.Instance.SaveManager.BuildSaveList(selectedGame);
             Manager.Instance.UI.Refresh();
         }
 
@@ -91,6 +93,42 @@ namespace AutoSaver2
                 throw;
             }
             
+        }
+
+        private void MenuOpenLogs_Click(object sender, EventArgs e)
+        {
+            if (Directory.Exists(Logger.FolderLocation))
+            {
+                Process.Start("explorer.exe", Logger.FolderLocation);
+            }
+        }
+
+        private void RestoreButton_Click(object sender, EventArgs e)
+        {
+            var selectedSave = Manager.Instance.UI.SavesBox.GetSelectedFileName();
+            if(selectedSave != null)
+            {
+                try
+                {
+                    var game = Manager.Instance.UI.SelectedGame;
+                    var save = game.GetSaveByFileName(selectedSave);
+                    Logger.Info(save.FileName);
+                    game.Restore(save);
+                }
+                catch { }
+            }
+        }
+
+        private void RestoreLatestButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var game = Manager.Instance.UI.SelectedGame;
+                var save = game.GetLatestSave();
+                Logger.Info(save.FileName);
+                game.Restore(save);
+            }
+            catch { }
         }
     }
 }

@@ -28,10 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem(new string[] {
+            "test",
+            "test2"}, -1);
             this.ServiceControlButton = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadDefaultGamesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.MenuOpenLogs = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuExit = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuAddGame = new System.Windows.Forms.ToolStripMenuItem();
             this.MenuEditGame = new System.Windows.Forms.ToolStripMenuItem();
@@ -52,9 +56,11 @@
             this.MainStatusStrip = new System.Windows.Forms.StatusStrip();
             this.ToolStripServiceStatusIndicator = new System.Windows.Forms.ToolStripStatusLabel();
             this.ToolStripMonitoredGameLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.SaveFileWatcher = new System.IO.FileSystemWatcher();
             this.menuStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.MainStatusStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SaveFileWatcher)).BeginInit();
             this.SuspendLayout();
             // 
             // ServiceControlButton
@@ -85,6 +91,7 @@
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.loadDefaultGamesToolStripMenuItem,
+            this.MenuOpenLogs,
             this.MenuExit});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
@@ -96,6 +103,13 @@
             this.loadDefaultGamesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.loadDefaultGamesToolStripMenuItem.Text = "Load Default Games";
             this.loadDefaultGamesToolStripMenuItem.Click += new System.EventHandler(this.MenuLoadDefaultList_Click);
+            // 
+            // MenuOpenLogs
+            // 
+            this.MenuOpenLogs.Name = "MenuOpenLogs";
+            this.MenuOpenLogs.Size = new System.Drawing.Size(180, 22);
+            this.MenuOpenLogs.Text = "Open Log Location";
+            this.MenuOpenLogs.Click += new System.EventHandler(this.MenuOpenLogs_Click);
             // 
             // MenuExit
             // 
@@ -205,9 +219,12 @@
             this.SavesListBox.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.fileName,
             this.createdTime});
+            this.SavesListBox.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
+            listViewItem1});
             this.SavesListBox.Location = new System.Drawing.Point(174, 139);
+            this.SavesListBox.MultiSelect = false;
             this.SavesListBox.Name = "SavesListBox";
-            this.SavesListBox.Size = new System.Drawing.Size(477, 280);
+            this.SavesListBox.Size = new System.Drawing.Size(477, 267);
             this.SavesListBox.TabIndex = 6;
             this.SavesListBox.UseCompatibleStateImageBehavior = false;
             this.SavesListBox.View = System.Windows.Forms.View.Details;
@@ -231,6 +248,7 @@
             this.RestoreButton.TabIndex = 7;
             this.RestoreButton.Text = "Restore";
             this.RestoreButton.UseVisualStyleBackColor = true;
+            this.RestoreButton.Click += new System.EventHandler(this.RestoreButton_Click);
             // 
             // RestoreLatestButton
             // 
@@ -241,6 +259,7 @@
             this.RestoreLatestButton.TabIndex = 8;
             this.RestoreLatestButton.Text = "Restore Latest";
             this.RestoreLatestButton.UseVisualStyleBackColor = true;
+            this.RestoreLatestButton.Click += new System.EventHandler(this.RestoreLatestButton_Click);
             // 
             // SelectedGameLabel
             // 
@@ -261,6 +280,7 @@
             this.MainStatusStrip.Location = new System.Drawing.Point(0, 409);
             this.MainStatusStrip.Name = "MainStatusStrip";
             this.MainStatusStrip.Size = new System.Drawing.Size(663, 22);
+            this.MainStatusStrip.SizingGrip = false;
             this.MainStatusStrip.TabIndex = 10;
             this.MainStatusStrip.Text = "statusStrip1";
             // 
@@ -275,6 +295,11 @@
             this.ToolStripMonitoredGameLabel.Name = "ToolStripMonitoredGameLabel";
             this.ToolStripMonitoredGameLabel.Size = new System.Drawing.Size(67, 17);
             this.ToolStripMonitoredGameLabel.Text = "{gameTitle}";
+            // 
+            // SaveFileWatcher
+            // 
+            this.SaveFileWatcher.EnableRaisingEvents = true;
+            this.SaveFileWatcher.SynchronizingObject = this;
             // 
             // Main
             // 
@@ -302,6 +327,7 @@
             this.groupBox1.PerformLayout();
             this.MainStatusStrip.ResumeLayout(false);
             this.MainStatusStrip.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SaveFileWatcher)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -333,5 +359,7 @@
         private StatusStrip MainStatusStrip;
         private ToolStripStatusLabel ToolStripServiceStatusIndicator;
         private ToolStripStatusLabel ToolStripMonitoredGameLabel;
+        private ToolStripMenuItem MenuOpenLogs;
+        public FileSystemWatcher SaveFileWatcher;
     }
 }

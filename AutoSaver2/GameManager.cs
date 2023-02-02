@@ -13,10 +13,16 @@ namespace AutoSaver2
     {
         internal ObservableCollection<Game> Games { get => games; set => games = value; }
         private ObservableCollection<Game> games;
+        public event EventHandler<EventArgs> OnSaveAdded;
         
         public GameManager()
         {
             games = new ObservableCollection<Game>();
+        }
+
+        public void FireOnSaveAdded()
+        {
+            OnSaveAdded?.Invoke(null, new EventArgs());
         }
 
         public Game GetGameByGuid(string guid)

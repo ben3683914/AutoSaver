@@ -51,10 +51,7 @@ namespace AutoSaver2.Forms
 
         private void AddGameButton_Click(object sender, EventArgs e)
         {
-            var guid = new Guid(Guid.NewGuid().ToString());
-            var game = new Game();
-            game.GUID = guid.ToString();
-            game.Title = GameNameTextbox.Text.Trim();
+            var game = new Game(GameNameTextbox.Text.Trim());
             game.IsWatcher = IsWatchSaveFolder.Checked;
             game.SaveLocation = SaveLocationTextBox.Text.Trim();
             game.Frequency = ((int)ArchiveSaveFrequencyNumber.Value);
